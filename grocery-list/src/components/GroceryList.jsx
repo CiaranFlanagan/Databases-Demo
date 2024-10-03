@@ -3,18 +3,16 @@ import GroceryItem from './GroceryItem.jsx';
 import AddItemForm from './AddItemForm.jsx';
 
 function GroceryList() {
-  const [items, setItems] = useState([]); 
+  const [items, setItems] = useState([]);
 
-  const addItem = (item) => {
-    setItems([...items, { id: Date.now(), name: item, purchased: false }]);
+  const addItem = (name) => {
+    if (name.trim()) { 
+      setItems([...items, { id: items.length, name }]);
+    }
   };
 
-  const toggleItemStatus = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, purchased: !item.purchased } : item
-      )
-    );
+  const deleteItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
   };
 
   return (
@@ -23,7 +21,11 @@ function GroceryList() {
       <AddItemForm addItem={addItem} />
       <ul>
         {items.map((item) => (
-          <GroceryItem key={item.id} item={item} toggleItemStatus={toggleItemStatus} />
+          <GroceryItem
+            key={item.id}
+            item={item}
+            deleteItem={deleteItem}
+          />
         ))}
       </ul>
     </div>
